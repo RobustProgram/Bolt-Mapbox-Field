@@ -1,8 +1,8 @@
 <?php
 
-namespace Bolt\Extension\Robustprogram\RPMapboxField\Provider;
+namespace Bolt\Extension\Robustprogram\MapboxField\Provider;
 
-use Bolt\Extension\Robustprogram\RPMapboxField\Field\RPMapboxFieldType;
+use Bolt\Extension\Robustprogram\MapboxField\Field\MapboxFieldType;
 use Bolt\Storage\FieldManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -14,7 +14,7 @@ class FieldProvider implements ServiceProviderInterface
         $app['storage.typemap'] = array_merge(
             $app['storage.typemap'],
             [
-                'RPMapbox' => RPMapboxFieldType::class
+                'RPMapboxField' => MapboxFieldType::class
             ]
         );
 
@@ -22,7 +22,7 @@ class FieldProvider implements ServiceProviderInterface
             $app->extend(
                 'storage.field_manager',
                 function (FieldManager $manager) {
-                    $manager->addFieldType('RPMapbox', new RPMapboxFieldType());
+                    $manager->addFieldType('RPMapboxField', new MapboxFieldType());
 
                     return $manager;
                 }
@@ -31,6 +31,9 @@ class FieldProvider implements ServiceProviderInterface
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function boot(Application $app)
     {
     }

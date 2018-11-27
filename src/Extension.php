@@ -1,18 +1,19 @@
 <?php
 
-namespace Bolt\Extension\Robustprogram\RPMapboxField;
+namespace Bolt\Extension\Robustprogram\MapboxField;
 
-use Bolt\Extension\Robustprogram\RPMapboxField\Provider\FieldProvider;
+use Bolt\Extension\Robustprogram\MapboxField\Provider\FieldProvider;
 use Bolt\Extension\SimpleExtension;
 
 /**
- * RPMapboxField extension class.
+ * The main extension class.
  *
  * @author Robustprogram
  */
 class Extension extends SimpleExtension
 {
-    public function getServiceProvider()
+
+    public function getServiceProviders()
     {
         return [
             $this,
@@ -22,8 +23,25 @@ class Extension extends SimpleExtension
 
     protected function registerTwigPaths()
     {
-        return[
+        return [
             'templates/bolt' => ['position' => 'prepend', 'namespace'=>'bolt']
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function registerAssets()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function registerTwigFunctions()
+    {
+        return [];
+    }
+
 }

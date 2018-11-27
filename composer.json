@@ -1,10 +1,10 @@
 {
-    "name": "robustprogram/rp-mapbox-field",
-    "description": "An extension allows for the use of mapbox in your Bolt CMS.",
+    "name": "robustprogram/bolt-mapbox-field",
+    "description": "A custom field that hydrates a URL field to a value object.",
     "type": "bolt-extension",
     "keywords": [
-        "mapbox",
-        "robustprogram"
+        "url",
+        "field"
     ],
     "require": {
         "bolt/bolt": "^3.0"
@@ -23,11 +23,17 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Bolt\\Extension\\Robustprogram\\RPMapboxField\\": "src"
+            "Bolt\\Extension\\Robustprogram\\MapboxField\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bolt\\Extension\\Robustprogram\\MapboxField\\Tests\\": "tests",
+            "Bolt\\Tests\\": "vendor/bolt/bolt/tests/phpunit/unit/"
         }
     },
     "extra": {
         "bolt-assets": "web",
-        "bolt-class": "Bolt\\Extension\\Robustprogram\\RPMapboxField\\Extension"
+        "bolt-class": "Bolt\\Extension\\Robustprogram\\MapboxField\\Extension"
     }
 }

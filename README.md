@@ -1,10 +1,15 @@
-Bolt Extension Starter
-======================
+# Custom URL field extension for use within Bolt CMS
 
-A starter skeleton for a Bolt v3.x Extension
+This adds a new field with a type `url` that stores a plain text string but provides a more useful hydrated object
+back to the frontend templates.
 
-To get going run the following command, replacing the last argument with the name of your extension:
+To add the field install this extension on your Bolt install and then modify your `contenttypes.yml` file to add a
+new field, something like this:
 
-`composer create-project --no-install bolt/bolt-extension-starter:^3.0 <newextname>`  
+```
+fields:
+    web:
+        type: url
+        label: Enter a web address
+```
 
-For more information, see this page in the Bolt documentation: https://docs.bolt.cm/extensions/building-starter/about
