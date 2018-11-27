@@ -1,1 +1,100 @@
-{% include 'editcontent/fields/_text.twig' %}
+{#=== OPTIONS ========================================================================================================#}
+
+{% set option = {
+    class:        ('form-control ' ~ field.class)|trim,
+    label:        field.label,
+    pattern:      field.pattern|default(''),
+    placeholder:  field.placeholder|default(''),
+    required:     field.required|default(false),
+    errortext:    field.error|default(''),
+    readonly:     field.readonly|default(false),
+    title:        field.title|default(''),
+    variant:      field.variant,
+    info:         field.info|default('')
+} %}
+{# variant[inline] #}
+
+{#=== INIT ===========================================================================================================#}
+
+{% set attributes = {
+    text: {
+        class:           option.class,
+        data_errortext:  option.errortext,
+        id:              key,
+        name:            name,
+        placeholder:     option.placeholder,
+        readonly:        option.readonly,
+        required:        option.required,
+        title:           option.title,
+        value:           context.content.get(contentkey)|default(''),
+    }
+} %}
+
+{% set class = option.variant == 'inline' ? ['col-sm-3', 'col-sm-9'] : ['col-xs-12', 'col-xs-12'] %}
+
+{#=== FIELDSET =======================================================================================================#}
+
+{% extends '@bolt/_base/_fieldset.twig' %}
+{% import '@bolt/_macro/_macro.twig' as macro %}
+
+{% block fieldset_type 'text' %}
+{% block fieldset_widget 'fieldText' %}
+
+{% block fieldset_label_text  labelkey %}
+{% block fieldset_label_info  option.info %}
+{% block fieldset_label_class 'control-label ' ~ class[0] %}
+{% block fieldset_label_for   key %}
+
+{% block fieldset_controls %}
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+    <style>
+        .geocoder{
+            width: 100%;
+        }
+        .mapboxgl-ctrl-geocoder { min-width:100%; }
+
+        #map{
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+
+    <div class="{{ class[1] }}">
+        <div class="row">
+            <div class="col-xs-8">
+                <label>Address lookup</label>
+                <div id='geocoder' class='geocoder'></div>
+            </div>
+            <div class="col-xs-4">
+                <div id='map'></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = '{{ config.get('general/mapbox_api_key') }}';
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [-79.4512, 43.6568],
+            zoom: 13
+        });
+
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken
+        });
+
+        document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+        window.onload = function() {
+            var geocoder_input = document.getElementById('geocoder').firstElementChild.getElementsByTagName("input")[0];
+            geocoder_input.id = '{{ attributes.text.id }}';
+            geocoder_input.name = '{{ attributes.text.name }}';
+            geocoder_input.value = '{{ attributes.text.value }}';
+        };
+    </script>
+{% endblock fieldset_controls %}

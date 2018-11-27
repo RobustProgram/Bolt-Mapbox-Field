@@ -1,10 +1,11 @@
 {
     "name": "robustprogram/bolt-mapbox-field",
-    "description": "A custom field that hydrates a URL field to a value object.",
+    "description": "A mapbox alternative to the google maps geocoder.",
     "type": "bolt-extension",
     "keywords": [
-        "url",
-        "field"
+        "mapbox",
+        "field",
+        "robustprogram"
     ],
     "require": {
         "bolt/bolt": "^3.0"
