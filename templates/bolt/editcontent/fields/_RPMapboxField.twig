@@ -1,8 +1,10 @@
 {#=== OPTIONS ========================================================================================================#}
 
 {% set option = {
-    class:        ('form-control ' ~ field.class)|trim,
-    label:        field.label
+    class:            ('form-control ' ~ field.class)|trim,
+    label:            field.label,
+    def_lat:          field.latitude|default(11.255),
+    def_long:         field.longitude|default(43.77),
 } %}
 {# variant[inline] #}
 
@@ -29,6 +31,7 @@
         name:        name ~ '[' ~ storage_name.latitude ~ ']',
         step:        'any',
         type:        'number',
+        readonly:    true,
     },
 
     longitude: {
@@ -36,6 +39,7 @@
         name:        name ~ '[' ~ storage_name.longitude ~ ']',
         step:        'any',
         type:        'number',
+        readonly:    true,
     }
 } %}
 
@@ -43,15 +47,21 @@
 
 {#=== FIELDSET =======================================================================================================#}
 
+{# Note, mapbox formats the coordinates to (Longitude, Latitude) #}
+
 {% extends '@bolt/_base/_fieldset.twig' %}
+
+{% set default_coord = {
+    latitude: geolocation.latitude|default(option.def_lat),
+    longitude: geolocation.longitude|default(option.def_long),
+}%}
 
 {% block fieldset_type 'RPMapboxField' %}
 {% block fieldset_widget 'fieldGeolocation' %}
 
 {% block fieldset_label_text  labelkey %}
 {% block fieldset_label_info  option.info %}
-{% block fieldset_label_class 'control-label ' ~ class[0] %}
-{% block fieldset_label_for   key %}
+{% block fieldset_label_class 'col-xs-12' %}
 
 {% block fieldset_controls %}
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
@@ -74,16 +84,16 @@
     <div class="{{ class[1] }}">
         <div class="row">
             <div class="col-xs-8">
-                <label>Address lookup</label>
+                <label>{{ __('field.geolocation.label.address-lookup') }}</label>
                 <div id='geocoder' class='geocoder'></div>
                 <div class="form-group">
                     <div class="col-xs-6">
-                        <label>{{ __('field.geolocation.label.latitude') }}</label>
-                        <input{{ hattr(attributes.latitude) }} value="{{ geolocation.latitude|default('') }}">
-                    </div>
-                    <div class="col-xs-6">
                         <label>{{ __('field.geolocation.label.longitude') }}</label>
                         <input {{ hattr(attributes.longitude) }} value="{{ geolocation.longitude|default('') }}">
+                    </div>
+                    <div class="col-xs-6">
+                        <label>{{ __('field.geolocation.label.latitude') }}</label>
+                        <input{{ hattr(attributes.latitude) }} value="{{ geolocation.latitude|default('') }}">
                     </div>
                 </div>
             </div>
@@ -99,19 +109,30 @@
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v9',
-            center: [-79.4512, 43.6568],
+            center: [{{ default_coord.longitude }}, {{ default_coord.latitude }}],
             zoom: 13
         });
 
-        var geocoder = new MapboxGeocoder({
-            accessToken: mapboxgl.accessToken
-        });
+        map.addControl(new mapboxgl.FullscreenControl());
+
+        var geocoder = new MapboxGeocoder({accessToken: mapboxgl.accessToken});
+        var location_marker = new mapboxgl.Marker().setLngLat([{{ default_coord.longitude }}, {{ default_coord.latitude }}]).addTo(map);
 
         document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+
+        // When the page is loaded, populate the geocoder with either either
+        // default data or user data.
         window.onload = function() {
             var geocoder_input = document.getElementById('geocoder').firstElementChild.getElementsByTagName("input")[0];
             geocoder_input.name = '{{ attributes.address.name }}';
-            geocoder_input.value = '{{ geolocation.address }}';
+            // geocoder_input.value = '{{ geolocation.address }}';
+            geocoder.setInput('{{ geolocation.address }}');
         };
+
+        geocoder.on('result', function(ev) {
+            location_marker.setLngLat(ev.result.center);
+            document.getElementsByName('{{ attributes.longitude.name }}')[0].value = ev.result.center[0];
+            document.getElementsByName('{{ attributes.latitude.name }}')[0].value = ev.result.center[1];
+        });
     </script>
 {% endblock fieldset_controls %}
