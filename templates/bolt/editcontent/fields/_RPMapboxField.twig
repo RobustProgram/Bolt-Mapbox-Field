@@ -2,31 +2,42 @@
 
 {% set option = {
     class:        ('form-control ' ~ field.class)|trim,
-    label:        field.label,
-    pattern:      field.pattern|default(''),
-    placeholder:  field.placeholder|default(''),
-    required:     field.required|default(false),
-    errortext:    field.error|default(''),
-    readonly:     field.readonly|default(false),
-    title:        field.title|default(''),
-    variant:      field.variant,
-    info:         field.info|default('')
+    label:        field.label
 } %}
 {# variant[inline] #}
 
 {#=== INIT ===========================================================================================================#}
 
+{% set geolocation = context.content.get(contentkey) %}
+
+{% set storage_name = {
+    address:    'address',
+    latitude:   'latitude',
+    longitude:  'longitude',
+} %}
+
 {% set attributes = {
-    text: {
-        class:           option.class,
-        data_errortext:  option.errortext,
-        id:              key,
-        name:            name,
-        placeholder:     option.placeholder,
-        readonly:        option.readonly,
-        required:        option.required,
-        title:           option.title,
-        value:           context.content.get(contentkey)|default(''),
+    address: {
+        class:       'form-control address',
+        name:        name ~ '[' ~ storage_name.address ~ ']',
+        placeholder: __('field.geolocation.placeholder.address') ~ ' …',
+        type:        'text',
+    },
+
+    latitude: {
+        class:       'form-control latitude',
+        name:        name ~ '[' ~ storage_name.latitude ~ ']',
+        readonly:    true,
+        step:        'any',
+        type:        'number',
+    },
+
+    longitude: {
+        class:       'form-control longitude',
+        name:        name ~ '[' ~ storage_name.longitude ~ ']',
+        readonly:    true,
+        step:        'any',
+        type:        'number',
     }
 } %}
 
@@ -35,10 +46,9 @@
 {#=== FIELDSET =======================================================================================================#}
 
 {% extends '@bolt/_base/_fieldset.twig' %}
-{% import '@bolt/_macro/_macro.twig' as macro %}
 
-{% block fieldset_type 'text' %}
-{% block fieldset_widget 'fieldText' %}
+{% block fieldset_type 'RPMapboxField' %}
+{% block fieldset_widget 'fieldGeolocation' %}
 
 {% block fieldset_label_text  labelkey %}
 {% block fieldset_label_info  option.info %}
@@ -68,12 +78,14 @@
             <div class="col-xs-8">
                 <label>Address lookup</label>
                 <div id='geocoder' class='geocoder'></div>
-                <div class="row">
+                <div class="form-group">
                     <div class="col-xs-6">
-                        <input id='{{ attributes.text.id }}["latitude"]' type='text' name='{{ attributes.text.id }}["latitude"]'/>
+                        <label>{{ __('field.geolocation.label.latitude') }}</label>
+                        <input{{ hattr(attributes.latitude) }} value="{{ geolocation.latitude|default('') }}">
                     </div>
                     <div class="col-xs-6">
-                        <input id='{{ attributes.text.id }}["longitude"]' type='text' name='{{ attributes.text.id }}["longitude"]'/>
+                        <label>{{ __('field.geolocation.label.longitude') }}</label>
+                        <input {{ hattr(attributes.longitude) }} value="{{ geolocation.longitude|default('') }}">
                     </div>
                 </div>
             </div>
@@ -100,9 +112,8 @@
         document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
         window.onload = function() {
             var geocoder_input = document.getElementById('geocoder').firstElementChild.getElementsByTagName("input")[0];
-            geocoder_input.id = '{{ attributes.text.id }}["address"]';
-            geocoder_input.name = '{{ attributes.text.name }}';
-            geocoder_input.value = '{{ attributes.text.value }}';
+            geocoder_input.name = '{{ attributes.address.name }}[address]';
+            geocoder_input.value = '{{ attributes.address.value }}';
         };
     </script>
 {% endblock fieldset_controls %}
