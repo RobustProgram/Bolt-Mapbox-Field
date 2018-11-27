@@ -24,7 +24,7 @@ class MapboxFieldType extends FieldTypeBase
      */
     public function getStorageType()
     {
-        return Type::getType('json');
+        return 'string';
     }
 
     public function getStorageOptions()
