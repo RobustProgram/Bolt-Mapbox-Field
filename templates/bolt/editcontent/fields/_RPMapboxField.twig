@@ -110,8 +110,8 @@
         document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
         window.onload = function() {
             var geocoder_input = document.getElementById('geocoder').firstElementChild.getElementsByTagName("input")[0];
-            geocoder_input.name = '{{ attributes.address.name }}[address]';
-            geocoder_input.value = '{{ attributes.address.value }}';
+            geocoder_input.name = '{{ attributes.address.name }}';
+            geocoder_input.value = '{{ geolocation.address }}';
         };
     </script>
 {% endblock fieldset_controls %}
