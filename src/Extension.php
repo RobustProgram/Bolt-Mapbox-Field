@@ -26,14 +26,4 @@ class Extension extends SimpleExtension
             'templates/bolt' => ['position' => 'prepend', 'namespace'=>'bolt']
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDefaultConfig()
-    {
-        return [
-            'mapbox_api_key' => '',
-        ];
-    }
 }

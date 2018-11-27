@@ -26,12 +26,6 @@
             "Bolt\\Extension\\Robustprogram\\RPMapboxField\\": "src"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Bolt\\Extension\\Robustprogram\\RPMapboxField\\Tests\\": "tests",
-            "Bolt\\Tests\\": "vendor/bolt/bolt/tests/phpunit/unit/"
-        }
-    },
     "extra": {
         "bolt-assets": "web",
         "bolt-class": "Bolt\\Extension\\Robustprogram\\RPMapboxField\\Extension"
