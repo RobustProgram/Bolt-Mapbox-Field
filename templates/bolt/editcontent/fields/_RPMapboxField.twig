@@ -68,6 +68,14 @@
             <div class="col-xs-8">
                 <label>Address lookup</label>
                 <div id='geocoder' class='geocoder'></div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <input id='{{ attributes.text.id }}["latitude"]' type='text' name='{{ attributes.text.id }}["latitude"]'/>
+                    </div>
+                    <div class="col-xs-6">
+                        <input id='{{ attributes.text.id }}["longitude"]' type='text' name='{{ attributes.text.id }}["longitude"]'/>
+                    </div>
+                </div>
             </div>
             <div class="col-xs-4">
                 <div id='map'></div>
@@ -92,7 +100,7 @@
         document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
         window.onload = function() {
             var geocoder_input = document.getElementById('geocoder').firstElementChild.getElementsByTagName("input")[0];
-            geocoder_input.id = '{{ attributes.text.id }}';
+            geocoder_input.id = '{{ attributes.text.id }}["address"]';
             geocoder_input.name = '{{ attributes.text.name }}';
             geocoder_input.value = '{{ attributes.text.value }}';
         };
