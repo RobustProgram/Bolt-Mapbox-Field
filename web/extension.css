@@ -1,1 +1,10 @@
 /*** Put your css styles here ****/
+.geocoder{
+    width: 100%;
+}
+.mapboxgl-ctrl-geocoder { min-width:100%; }
+
+#map{
+    width: 100%;
+    height: 200px;
+}
