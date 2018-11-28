@@ -28,12 +28,12 @@ class Extension extends SimpleExtension
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function registerAssets()
     {
-        return [];
+        return [
+            Stylesheet::create('extension.css')->setZone(Zone::BACKEND),
+            JavaScript::create('extension.js')->setZone(Zone::BACKEND)
+        ];
     }
 
     /**
