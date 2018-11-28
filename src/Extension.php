@@ -4,6 +4,9 @@ namespace Bolt\Extension\Robustprogram\MapboxField;
 
 use Bolt\Extension\Robustprogram\MapboxField\Provider\FieldProvider;
 use Bolt\Extension\SimpleExtension;
+use Bolt\Asset\File\JavaScript;
+use Bolt\Asset\File\Stylesheet;
+use Bolt\Controller\Zone;
 
 /**
  * The main extension class.
