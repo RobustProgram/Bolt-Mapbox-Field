@@ -10,7 +10,6 @@ use Bolt\Storage\QuerySet;
  * This class extends the base field type and looks after serializing and hydrating the field
  * on save and load.
  *
- * @author Robustprogram
  */
 class MapboxFieldType extends FieldTypeBase
 {
