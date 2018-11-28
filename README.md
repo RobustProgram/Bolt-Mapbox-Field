@@ -35,3 +35,5 @@ To access the saved data in the front-end, you can use
 `{{ mapboxfield.longitude }}`, `{{ mapboxfield.latitude }}` to get the address's
 respective longitude and latitude. Replace the name `mapboxfield` with the name
 you provided for the content_type.
+
+#### MIT License
