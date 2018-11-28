@@ -4,9 +4,6 @@ namespace Bolt\Extension\Robustprogram\MapboxField;
 
 use Bolt\Extension\Robustprogram\MapboxField\Provider\FieldProvider;
 use Bolt\Extension\SimpleExtension;
-use Bolt\Asset\File\JavaScript;
-use Bolt\Asset\File\Stylesheet;
-use Bolt\Controller\Zone;
 
 /**
  * The main extension class.
@@ -33,10 +30,7 @@ class Extension extends SimpleExtension
 
     protected function registerAssets()
     {
-        return [
-            Stylesheet::create('extension.css')->setZone(Zone::BACKEND),
-            JavaScript::create('extension.js')->setZone(Zone::BACKEND)
-        ];
+        return [];
     }
 
     /**
