@@ -27,8 +27,8 @@ content_type:
 ```
 
 The `type` field must be labeled as `RPMapboxField`. The current build allows
-for three parameters, the ability to set the label and the ability to set the
-default map view via the longitude and latitude fields.
+for three parameters, the ability to set the `label` and the ability to set the
+default map view via the `longitude` and `latitude` fields.
 
 To access the saved data in the front-end, you can use
 `{{ mapboxfield.address }}` to get the written address and use
