@@ -2,6 +2,7 @@
     "name": "robustprogram/bolt-mapbox-field",
     "description": "A mapbox alternative to the google maps geocoder.",
     "type": "bolt-extension",
+    "version": "0.1.0",
     "keywords": [
         "mapbox",
         "field",
